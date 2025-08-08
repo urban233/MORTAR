@@ -105,7 +105,7 @@ jobs:
       - name: Verify Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3
       - name: Build extension
-        run: ./gradlew installDist
+        run: ./gradlew zipDist
       - name: Download Inno Setup installer
         run: Invoke-WebRequest -Uri https://files.jrsoftware.org/is/6/innosetup-6.4.2.exe -OutFile inno-setup.exe
       - name: Install Inno Setup
