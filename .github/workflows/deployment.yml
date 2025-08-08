@@ -80,7 +80,7 @@ jobs:
       - name: Upload DMG as an artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MORTAR-1.4.0.dmg
+          name: MORTAR-1.4.0-${{ matrix.os }}.dmg
           path: ./*.dmg
           retention-days: 30
           compression-level: 0 # no compression since it makes no difference
@@ -105,7 +105,7 @@ jobs:
       - name: Verify Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3
       - name: Build extension
-        run: ./gradlew distZip
+        run: ./gradlew installDist
       - name: Download Inno Setup installer
         run: Invoke-WebRequest -Uri https://files.jrsoftware.org/is/6/innosetup-6.4.2.exe -OutFile inno-setup.exe
       - name: Install Inno Setup
@@ -124,15 +124,9 @@ jobs:
           New-Item -ItemType Directory -Force -Path .\in\jdk-21.0.1_12_jre
       - name: Prepare files for setup
         run: |
-          # Assuming the Gradle build produces files in build/install/MORTAR/
-          Expand-Archive -Path .\build\distributions\MORTAR.zip -DestinationPath .\temp_mortar
-          # Copy bin files
-          Copy-Item -Path .\temp_mortar\bin\* -Destination .\in\bin -Recurse -Force
-          # Copy lib files
-          Copy-Item -Path .\temp_mortar\lib\* -Destination .\in\lib -Recurse -Force
-          # Copy tutorial files
-          Copy-Item -Path .\temp_mortar\tutorial\* -Destination .\in\tutorial -Recurse -Force
-          # Copy icon files
+          Copy-Item -Path .\build\install\MORTAR\bin\* -Destination .\in\bin -Recurse -Force
+          Copy-Item -Path .\build\install\MORTAR\lib\* -Destination .\in\lib -Recurse -Force
+          Copy-Item -Path .\build\install\MORTAR\tutorial\* -Destination .\in\tutorial -Recurse -Force
           Copy-Item -Path .\Images\Mortar_Logo_Icon1.ico -Destination .\in\icon -Force
       - name: Download Temurin JRE
         run: |
