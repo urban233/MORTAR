@@ -127,6 +127,18 @@ val mortarHighMemory = createMortarStartScriptTask(
     providers.gradleProperty("highMemoryOptimization").get(),
     providers.gradleProperty("highHeapSize").get()
 )
+
+// This task is needed to correctly modify the start scripts for the installDist task
+tasks.named<CreateStartScripts>("startScripts") {
+    val tmpMortarOptimizationVariable = providers.gradleProperty("defaultMemoryOptimization").get()
+    doLast {
+        modifyMortarStartScripts(
+            windowsScript,
+            unixScript,
+            tmpMortarOptimizationVariable
+        )
+    }
+}
 //</editor-fold>
 
 //<editor-fold desc="FatJar tasks">
