@@ -72,10 +72,10 @@ jobs:
         run: |
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             ./gradlew --info --stacktrace fatJarAarch64
-            jpackage -i . -n MORTAR --icon Images/MORTAR-icon.icns --main-jar build/libs/MORTAR-fat-1.4.0.0.jar -t dmg --app-version 1.4.0 --copyright "Copyright (C) 2025  Felix Baensch, Jonas Schaub; licensed under MIT license" --description "MORTAR - MOlecule fRagmenTAtion fRamework" --java-options "-Xms512m -Xmx4g" --about-url "https://github.com/FelixBaensch/MORTAR"
+            jpackage -i . -n MORTAR --icon Images/MORTAR-icon.icns --main-jar build/libs/MORTAR-fat-aarch64-1.4.0.0.jar -t dmg --app-version 1.4.0 --copyright "Copyright (C) 2025  Felix Baensch, Jonas Schaub; licensed under MIT license" --description "MORTAR - MOlecule fRagmenTAtion fRamework" --java-options "-Xms512m -Xmx4g" --about-url "https://github.com/FelixBaensch/MORTAR"
           else
             ./gradlew --info --stacktrace fatJar
-            jpackage -i . -n MORTAR --icon Images/MORTAR-icon.icns --main-jar build/libs/MORTAR-fat-aarch64-1.4.0.0.jar -t dmg --app-version 1.4.0 --copyright "Copyright (C) 2025  Felix Baensch, Jonas Schaub; licensed under MIT license" --description "MORTAR - MOlecule fRagmenTAtion fRamework" --java-options "-Xms512m -Xmx4g" --about-url "https://github.com/FelixBaensch/MORTAR"
+            jpackage -i . -n MORTAR --icon Images/MORTAR-icon.icns --main-jar build/libs/MORTAR-fat-1.4.0.0.jar -t dmg --app-version 1.4.0 --copyright "Copyright (C) 2025  Felix Baensch, Jonas Schaub; licensed under MIT license" --description "MORTAR - MOlecule fRagmenTAtion fRamework" --java-options "-Xms512m -Xmx4g" --about-url "https://github.com/FelixBaensch/MORTAR"
           fi
       - name: Upload DMG as an artifact
         uses: actions/upload-artifact@v4
@@ -105,7 +105,7 @@ jobs:
       - name: Verify Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3
       - name: Build extension
-        run: ./gradlew zipDist
+        run: ./gradlew distZip
       - name: Download Inno Setup installer
         run: Invoke-WebRequest -Uri https://files.jrsoftware.org/is/6/innosetup-6.4.2.exe -OutFile inno-setup.exe
       - name: Install Inno Setup
