@@ -130,7 +130,16 @@ val mortarHighMemory = createMortarStartScriptTask(
 
 // This task is needed to correctly modify the start scripts for the installDist task
 tasks.named<CreateStartScripts>("startScripts") {
-    finalizedBy(mortarStandardMemory)
+    applicationName = "MORTAR"  // This will create MORTAR.bat and MORTAR (Unix)
+
+    val defaultHeapSize = providers.gradleProperty("defaultHeapSize").get()
+    val defaultMemoryOptimization = providers.gradleProperty("defaultMemoryOptimization").get()
+
+    defaultJvmOpts = listOf("-Xms$defaultHeapSize", "-Xmx$defaultHeapSize")
+
+    doLast {
+        modifyMortarStartScripts(windowsScript, unixScript, defaultMemoryOptimization)
+    }
 }
 //</editor-fold>
 
